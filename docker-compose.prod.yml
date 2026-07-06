@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: vue-project
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - dist:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/ngix/conf.d/default.conf
+
+volumes:
+  dist:
