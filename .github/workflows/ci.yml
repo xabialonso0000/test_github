@@ -17,5 +17,5 @@ jobs:
         working-directory: front
       - run: npm run build
         working-directory: front
-      - run: npm test
+      - run: npm run test:unit
         working-directory: front
