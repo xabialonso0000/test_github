@@ -4,6 +4,10 @@ on:
   push:
   workflow_dispatch:
 
+permission:
+  contents: read
+  packaegs: write
+
 jobs:
   build:
 
@@ -17,6 +21,13 @@ jobs:
           cache-dependency-path: front/package-lock.json
       - run: npm ci
         working-directory: front
+      - name: Login to GMCR
+        if: ${{ !env.ACT }}
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run build
         working-directory: front
       - run: npm run test:unit -- --run
@@ -28,5 +39,7 @@ jobs:
           name: test-results
           path: front/test-results
       - name: Build Docker image
-        run: docker build -t vue-project:latest .
+        run: |
+          docker build \
+            -t ghcr.io/${{ github.re@psitory }}:latest .
         working-directory: front
