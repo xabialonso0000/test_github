@@ -28,5 +28,5 @@ jobs:
           name: test-results
           path: front/test-results
       - name: Build Docker image
-        run: docker build -t vue-project:latest
+        run: docker build -t vue-project:latest .
         working-directory: front
