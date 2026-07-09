@@ -13,9 +13,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: front/package-lock.json
       - run: npm ci
         working-directory: front
       - run: npm run build
         working-directory: front
-      - run: npm run test:unit
+      - run: npm run test:unit -- --run
         working-directory: front
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: front/test-results
